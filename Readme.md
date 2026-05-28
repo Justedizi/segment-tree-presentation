@@ -54,3 +54,29 @@ Podobnie przy zapytaniu, nie musimy sumować wszystkich elementów jeden po drug
 Wtedy segment tree zliczajace sume wyglada w ten sposob
 
 ![](./tree.png)
+
+#Implementacja
+
+Segment tree mozna implemnetowac na dwa sposoby jako klasyczne drzewo binarne lub czesciej spotykana za pomoca plaskiej tablicy.
+
+Implementacja dla naszego problemu:
+
+Najpierw zdefiniujmy jak bedzie wygldac nasz Node:
+
+`struct Node {
+  long long sum;
+  long long pref;
+  long long suff;
+  long long ans;
+};
+`
+drzewo bedzie reprezetnowane jako:
+
+`std::vector<Node> tree(4*n);`
+
+Inicjalizacja:
+
+
+
+
+
