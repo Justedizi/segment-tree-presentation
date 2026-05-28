@@ -2,6 +2,6 @@
 #include <iostream>
 
 int main() {
-  std::cout << "cos tam";
+  std::cout << "cm";
   return 0;
 }
