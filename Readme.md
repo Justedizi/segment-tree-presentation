@@ -47,6 +47,10 @@ Kiedy aktualizujemy element (np. w liściu), musimy zaktualizować tylko tych "r
 
 Podobnie przy zapytaniu, nie musimy sumować wszystkich elementów jeden po drugim. Jeśli potrzebujemy sumy przedziału, a w drzewie istnieje węzeł, który dokładnie pokrywa ten przedział (lub jego duży fragment), używamy tej gotowej wartości. W najgorszym razie musimy odwiedzić węzły wzdłuż ścieżek o głębokości drzewa.
 
-## Dlaczego używamy Drzew Przedziałowych?
+# przyklad
 
-Ich główną zaletą jest zdolność do wykonywania zapytań zakresowych oraz modyfikacji pojedynczych elementów w doskonałym czasie $O(\log n)$. Dzięki temu znakomicie sprawdzają się w algorytmach operujących na często zmieniających się danych. W programowaniu turniejowym (Competitive Programming) oraz w zaawansowanym inżynierii oprogramowania jest to fundamentalna wiedza.
+*Arr = [1,4,,5,9,10,12]*
+
+Wtedy segment tree zliczajace sume wyglada w ten sposob
+
+![](./tree.png)
