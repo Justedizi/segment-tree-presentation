@@ -143,6 +143,9 @@ Dlaczego l % 2 == 1 i r % 2 == 0?
 Wynika to z faktu, że dla l % 2 == 1 operacja l / 2 nie będzie zawierać samego elementu l – chodzi o sposób indeksowania w drzewie (standardowe drzewo przedziałowe 2n).
 
 # Benchmark Drzewo Przedziałowe vs Naiwny Algorytm Kadane'a
+
+[](/Benchmark.png)
+
 Poniższe wyniki przedstawiają testy wydajnościowe wykonane przy pomocy biblioteki Google Benchmark. Porównano w nich operację modyfikacji elementu oraz znalezienia maksymalnego podciągu dla tablic o rozmiarach od 10^3 do 10^6 z optymalizacja -O3
 
 Time / CPU – Średni czas wykonania pojedynczej operacji (zmiana elementu + zapytanie). Wyrażony w nanosekundach (ns).
