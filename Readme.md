@@ -55,7 +55,7 @@ Wtedy segment tree zliczajace sume wyglada w ten sposob
 
 ![](./tree.png)
 
-#Implementacja
+# Implementacja
 
 Segment tree mozna implemnetowac na dwa sposoby jako klasyczne drzewo binarne lub czesciej spotykana za pomoca plaskiej tablicy.
 
@@ -64,19 +64,75 @@ Implementacja dla naszego problemu:
 Najpierw zdefiniujmy jak bedzie wygldac nasz Node:
 
 `struct Node {
-  long long sum;
-  long long pref;
+  long long sum // suma prawego i lewego dziecka;
+  long long pref // suma;
   long long suff;
   long long ans;
 };
 `
 drzewo bedzie reprezetnowane jako:
 
-`std::vector<Node> tree(4*n);`
+`std::vector<Node> tree(2*n);
 
-Inicjalizacja:
+Dodawanie elementu:
 
+`void updateElement(int index, long long value) {
+    index += max_capacity;
+    tree[index] = make_node(value);
+    
+    for (index /= 2; index > 0; index /= 2) {
+        tree[index] = combine(tree[2 * index], tree[2 * index + 1]);
+    }
+}`
 
+Obliczanie podciagu o najwiekszej sumie dla 2 przedzialow:
+
+'Node SegmentTree::combine(const Node& left, const Node& right) {
+    if (left.ans == MIN_INF) return right;
+    if (right.ans == MIN_INF) return left;
+
+    Node res;
+    res.sum = left.sum + right.sum //suma wszystkich elementow;
+    res.pref = std::max(left.pref, left.sum + right.pref) //suma wszystkich elementow do lewej przedzialu ; 
+    res.suff = std::max(right.suff, right.sum + left.suff) // suma wszystkich elementow od prawej przedzialu;
+    res.ans = std::max({left.ans, right.ans, left.suff + right.pref});
+    return res;
+}'
+
+Mamy dawa przypadki:
+
+1. podciag znajduje sie w jednym z dwoch przedzialow np 
+
+`[3,-2,4,-10] = 5 , [1,2] = 3 wynik to 5`
+
+2. podciag rozciaga sie na oba przedzialy
+`[3,2,-1] = 5, [10,-1,4] = 13 wynik to 17'
+
+Znajdowanie odpowiedzi dla przedzialu
+
+`long long queryMaxSubarray(int l, int r) {
+    if (l < 0 || r >= current_size || l > r) return 0;
+
+    l += max_capacity;
+    r += max_capacity;
+
+    Node resL = {0, MIN_INF, MIN_INF, MIN_INF};
+    Node resR = {0, MIN_INF, MIN_INF, MIN_INF};
+
+    while (l <= r) {
+        if (l % 2 == 1) {
+            resL = combine(resL, tree[l]);
+            l++;
+        }
+        if (r % 2 == 0) {
+            resR = combine(tree[r], resR);
+            r--;
+        }
+        l /= 2;
+        r /= 2;
+    }
+    return combine(resL, resR).ans;
+}`
 
 
 

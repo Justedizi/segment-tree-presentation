@@ -18,8 +18,6 @@ private:
 
   Node combine(const Node &left, const Node &right);
   Node make_node(long long val);
-  void update_tree(int node, int left, int right, int index, long long value);
-  Node query_tree(int node, int left, int right, int q_left, int q_right);
 
 public:
   SegmentTree(int capacity);

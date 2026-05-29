@@ -25,3 +25,9 @@ FetchContent_MakeAvailable(googlebenchmark)
 add_executable(segment_tree_benchmark src/benchmark.cpp)
 # Linkujemy naszą logikę drzewa oraz biblioteki Google Benchmark
 target_link_libraries(segment_tree_benchmark PRIVATE segment_tree_lib benchmark::benchmark benchmark::benchmark_main)
+
+# Set default build type to Debug if none was specified
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build." FORCE)
+  message(STATUS "Default build type set to Debug")
+endif()
