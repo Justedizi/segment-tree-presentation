@@ -70,3 +70,136 @@ struct Node {
   long long suff;
   long long ans;
 };
+
+# Segment Tree – maksymalny podciąg (Kadane na przedziałach)
+
+## Reprezentacja drzewa
+
+```cpp
+std::vector<Node> tree(2 * n);
+Dodawanie elementu (aktualizacja)
+cpp
+void updateElement(int index, long long value) {
+    index += max_capacity;
+    tree[index] = make_node(value);
+    
+    for (index /= 2; index > 0; index /= 2) {
+        tree[index] = combine(tree[2 * index], tree[2 * index + 1]);
+    }
+}
+Łączenie dwóch węzłów (dla podciągu o maksymalnej sumie)
+
+cpp
+Node SegmentTree::combine(const Node& left, const Node& right) {
+    if (left.ans == MIN_INF) return right;
+    if (right.ans == MIN_INF) return left;
+
+    Node res;
+    res.sum = left.sum + right.sum; // suma wszystkich elementów
+    res.pref = std::max(left.pref, left.sum + right.pref); // najlepszy prefiks
+    res.suff = std::max(right.suff, right.sum + left.suff); // najlepszy sufiks
+    res.ans = std::max({left.ans, right.ans, left.suff + right.pref});
+    return res;
+}
+Dwa przypadki dla zapytania
+Podciąg znajduje się w jednym z dwóch przedziałów, np. [3, -2, 4, -10] = 5, [1, 2] = 3 → wynik to 5.
+
+Podciąg rozciąga się na oba przedziały: [3, 2, -1] = 5, [10, -1, 4] = 13 → wynik to 17.
+
+Zapytanie o maksymalny podciąg na przedziale [l, r]
+cpp
+long long queryMaxSubarray(int l, int r) {
+    if (l < 0 || r >= current_size || l > r) return 0;
+
+    l += max_capacity;
+    r += max_capacity;
+
+    Node resL = {0, MIN_INF, MIN_INF, MIN_INF};
+    Node resR = {0, MIN_INF, MIN_INF, MIN_INF};
+
+    while (l <= r) {
+        if (l % 2 == 1) {
+            resL = combine(resL, tree[l]);
+            l++;
+        }
+        if (r % 2 == 0) {
+            resR = combine(tree[r], resR);
+            r--;
+        }
+        l /= 2;
+        r /= 2;
+    }
+    return combine(resL, resR).ans;
+}
+Dlaczego l % 2 == 1 i r % 2 == 0?
+Wynika to z faktu, że dla l % 2 == 1 operacja l / 2 nie będzie zawierać samego elementu l – chodzi o sposób indeksowania w drzewie (standardowe drzewo przedziałowe 2n).
+
+Benchmark – Raport Wydajności: Drzewo Przedziałowe vs Naiwny Algorytm Kadane'a
+Poniższe wyniki przedstawiają testy wydajnościowe wykonane przy pomocy biblioteki Google Benchmark. Porównano w nich operację modyfikacji elementu oraz znalezienia maksymalnego podciągu dla tablic o rozmiarach od 
+10
+3
+10 
+3
+  do 
+10
+6
+10 
+6
+  elementów.
+
+Ważna uwaga: Testy zostały uruchomione w trybie DEBUG (bez optymalizacji kompilatora np. -O3). Oznacza to, że bezwzględne czasy wykonania (nanosekundy) są wyższe niż w środowisku produkcyjnym, jednak proporcje i złożoność asymptotyczna pozostają w 100% miarodajne i prawdziwe.
+
+1. Jak czytać wyniki? (Wyjaśnienie kolumn)
+Time / CPU – Średni czas wykonania pojedynczej operacji (zmiana elementu + zapytanie). Wyrażony w nanosekundach (ns).
+
+Iterations – Liczba powtórzeń, które framework wykonał, aby uśrednić wynik. Im algorytm szybszy, tym więcej prób (np. szybkie Drzewo wykonało >1M iteracji dla N=1000, a powolny Kadane dla N=1 000 000 zaledwie 100).
+
+BigO – Wyliczona przez Google Benchmark rzeczywista złożoność asymptotyczna na podstawie punktów pomiarowych.
+
+RMS – Współczynnik błędu dopasowania do idealnej krzywej matematycznej. Im bliżej 0%, tym bardziej algorytm zachowuje się jak w podręczniku.
+
+2. Analiza Algorytmów
+Naiwny Algorytm Kadane'a (podejście klasyczne)
+
+BigO: 7.01 N – framework rozpoznał złożoność liniową O(N).
+
+RMS: 0% – bezbłędne dopasowanie liniowe.
+
+Wniosek: Czas rośnie proporcjonalnie do rozmiaru danych. Gdy tablica rośnie 10× (z 10 tys. na 100 tys.), czas rośnie też 10× (z ~70 tys. ns na ~700 tys. ns).
+
+Drzewo Przedziałowe (podejście zoptymalizowane)
+
+BigO: 55.18 lgN – potwierdzona złożoność logarytmiczna O(log N).
+
+RMS: 11% – dobre dopasowanie (lekkie odchylenia typowe dla struktur drzewiastych w trybie debug).
+
+Wniosek: Skalowanie fenomenalne – przy wzroście rozmiaru z 1 000 do 1 000 000 (1000×) czas rośnie tylko ~2× (z 555 ns na 1231 ns).
+
+3. Podsumowanie (przepaść przy 1 000 000 elementów)
+Dla tablicy o rozmiarze miliona elementów, po zmianie jednej liczby:
+
+Naiwny Kadane: ~7 013 307 ns (ponad 7 milisekund)
+
+Drzewo przedziałowe: 1 231 ns (~1.2 mikrosekundy)
+
+Przyspieszenie: ~5700×.
+Dla dynamicznie zmieniających się danych narzut pamięciowy i implementacyjny Drzewa Przedziałowego jest w pełni uzasadniony.
+
+Inne ciekawe zastosowania Segment Tree
+Finding Range Sum Queries
+
+Searching index with given prefix sum
+
+Finding Range Maximum/Minimum
+
+Counting frequency of Range Maximum/Minimum
+
+Finding Range GCD/LCM
+
+Finding Range AND/OR/XOR
+
+Finding number of zeros in the given range or finding index of Kth zero
+
+Źródła
+[1] GeeksforGeeks: Segment Tree Data Structure
+[2] Wikipedia: Segment tree
