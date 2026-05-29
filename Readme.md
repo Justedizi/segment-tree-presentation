@@ -156,9 +156,7 @@ BigO – Wyliczona przez Framework rzeczywista złożoność asymptotyczna na po
 
 RMS – Współczynnik błędu dopasowania do idealnej krzywej matematycznej. Im bliżej 0%, tym bardziej algorytm zachowuje się jak teorytczna zloznosc
 
-# Analiza Algorytmów
-
-Podsumowanie:
+**Podsumowanie:**
 
 Naiwny Kadane: ~7 013 307 ns (ponad 7 milisekund)
 
