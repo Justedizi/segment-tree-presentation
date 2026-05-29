@@ -66,8 +66,8 @@ Najpierw zdefiniujmy, jak będzie wyglądać nasz Node:
 ```cpp
 struct Node {
   long long sum; // suma prawego i lewego dziecka
-  long long pref; // suma
-  long long suff;
+  long long pref; // najlepsza prefix
+  long long suff; // najlepszy suffix
   long long ans;
 };
 ```
@@ -149,7 +149,7 @@ gdzie drugi przedzial wykracza po za zakres [l,r] wiec nie mozemy go po prostu u
 
 ![](./Benchmark.png)
 
-Poniższe wyniki przedstawiają testy wydajnościowe wykonane przy pomocy biblioteki Google Benchmark. Porównano w nich operację modyfikacji elementu oraz znalezienia maksymalnego podciągu dla tablic o rozmiarach od 10^3 do 10^6 z optymalizacja -O3
+Poniższe wyniki przedstawiają testy wydajnościowe wykonane przy pomocy biblioteki Google Benchmark. Porównano w nich operację modyfikacji elementu oraz znalezienia maksymalnego podciągu dla tablic o rozmiarach od 10^3 do 10^6 i z elementami w zakresie [-1000,1000] z optymalizacja -O3
 
 Time / CPU – Średni czas wykonania pojedynczej operacji (zmiana elementu + zapytanie). Wyrażony w nanosekundach (ns).
 
