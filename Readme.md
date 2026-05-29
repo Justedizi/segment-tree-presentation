@@ -142,8 +142,8 @@ Dlaczego l % 2 == 1 i r % 2 == 0?
 
 *W naszej implementacji dla wygody tablica jest ideksowna od 1 zatem ideksy nie parzyste to lewe liscie a parzyste prawe.*
 
-Jesli dla elementu l takiego ze `l % 2 == 1` pojdziemy do gory 'l /=2' to tree[l] bedzie zawierac sume przedzialow `[l -1 ...], [l ...]`
-gdzie drugi przedzial wykracza po za zakres [l,r] wiec nie mozemy go po prostu uzglednic analogicznie jest dla r % 2 == 0.
+Jesli dla elementu l takiego ze `l % 2 == 1` pojdziemy do gory to `tree[l/2]` bedzie zawierac sume przedzialow `[l -1 ...], [l ...]`
+gdzie drugi przedzial wykracza po za zakres [l,r] wiec nie mozemy go po prostu uzglednic analogicznie jest dla `r % 2 == 0`.
 
 # Benchmark Drzewo Przedziałowe vs Naiwny Algorytm Kadane'a
 
