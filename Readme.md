@@ -134,5 +134,68 @@ Znajdowanie odpowiedzi dla przedzialu
     return combine(resL, resR).ans;
 }`
 
+Dlaczego przypadki z l % 2 == 1 i r % 2 == 0
+
+wynika to z ze dla l% 2 == 1 , l/2 nie bedzie za zawierac samego elemetu l wynika to z tego w jaki sposob tworzylismy drzewo
+
+#benchmark
+
+# Raport Wydajności: Drzewo Przedziałowe vs Naiwny Algorytm Kadane'a
+
+Poniższe wyniki przedstawiają testy wydajnościowe wykonane przy pomocy biblioteki Google Benchmark. Porównano w nich operację modyfikacji elementu oraz znalezienia maksymalnego podciągu dla tablic o rozmiarach od $10^3$ do $10^6$ elementów.
+
+> **Ważna uwaga:** Testy zostały uruchomione w trybie `DEBUG` (bez optymalizacji kompilatora np. `-O3`). Oznacza to, że bezwzględne czasy wykonania (nanosekundy) są wyższe niż w środowisku produkcyjnym, jednak **proporcje i złożoność asymptotyczna pozostają w 100% miarodajne i prawdziwe.**
+
+---
+
+## 1. Jak czytać wyniki? (Wyjaśnienie kolumn)
+
+* **Time / CPU:** Średni czas wykonania pojedynczej operacji (zmiana elementu + zapytanie). Wyrażony w nanosekundach (ns).
+* **Iterations:** Liczba powtórzeń, które framework wykonał, aby uśrednić wynik. Im algorytm jest szybszy, tym więcej prób zdąży wykonać (np. szybkie Drzewo wykonało ponad milion iteracji dla N=1000, podczas gdy powolny Kadane dla N=1000000 zaledwie 100).
+* **BigO:** Wyliczona przez Google Benchmark rzeczywista złożoność asymptotyczna na podstawie punktów pomiarowych. 
+* **RMS (Root Mean Square):** Współczynnik błędu dopasowania wyników do idealnej krzywej matematycznej. Im bliżej 0%, tym bardziej algorytm zachowuje się jak w akademickim podręczniku.
+
+---
+
+## 2. Analiza Algorytmów
+
+### Naiwny Algorytm Kadane'a (Podejście klasyczne)
+* **Złożoność (BigO):** `7.01 N` – framework idealnie rozpoznał złożoność liniową **O(N)**.
+* **RMS:** `0 %` – bezbłędne dopasowanie liniowe.
+* **Wniosek:** Czas działania rośnie proporcjonalnie do rozmiaru danych. Gdy tablica rośnie 10-krotnie (z 10 tys. na 100 tys.), czas również rośnie dokładnie 10-krotnie (z ~70 tys. ns na ~700 tys. ns). 
+
+### Drzewo Przedziałowe (Podejście zoptymalizowane)
+* **Złożoność (BigO):** `55.18 lgN` – framework potwierdził, że operacje aktualizacji i zapytania działają w czasie logarytmicznym **O(log N)**.
+* **RMS:** `11 %` – bardzo dobre dopasowanie z lekkimi odchyleniami typowymi dla struktur drzewiastych (wynikającymi m.in. ze skoków po pamięci cache w trybie debug).
+* **Wniosek:** Skalowanie jest fenomenalne. Kiedy rozmiar tablicy wzrasta z 1 000 do 1 000 000 (tysiąckrotnie!), czas wykonania nie rośnie tysiąckrotnie, a zaledwie **niecałe dwa razy** (z 555 ns na 1231 ns).
+
+---
+
+## 3. Podsumowanie (Przepaść przy 1 000 000 elementów)
+
+Dla tablicy o rozmiarze miliona elementów, po zmianie zaledwie jednej liczby musimy znaleźć nowy maksymalny podciąg. 
+* Naiwny algorytm potrzebuje na to **~7 013 307 ns** (ponad 7 milisekund).
+* Drzewo przedziałowe robi to w **1 231 ns** (około 1.2 mikrosekundy).
+
+Dzięki zastosowaniu Drzewa Przedziałowego, dla miliona elementów osiągnięto **około 5700-krotne przyspieszenie**. Wyniki te niezbicie dowodzą, że dla dynamicznie zmieniających się danych, narzut pamięciowy i implementacyjny Drzewa Przedziałowego jest absolutnie uzasadniony.
+
+
+## Inne ciekawe zastoswoania segment tree
+
+Finding Range Sum Queries
+Searching index with given prefix sum
+Finding Range Maximum/Minimum
+Counting frequency of Range Maximum/Minimum
+Finding Range GCD/LCM
+Finding Range AND/OR/XOR
+Finding number of zeros in the given range or finding index of Kth zero
+
+
+##zrodla
+
+["1"](https://www.geeksforgeeks.org/dsa/segment-tree-data-structure/)
+["2"](https://en.wikipedia.org/wiki/Segment_tree)
+
+
 
 
