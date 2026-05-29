@@ -13,7 +13,7 @@ Drzewo Przedziałowe to zaawansowana struktura danych, zaprojektowana w celu opt
 Wyobraźmy sobie tablicę `arr[0...n-1]` i dwa rodzaje operacji, które chcemy na niej wykonywać:
 
 1. **Znalezienie sumy (lub innej wartości):** Chcemy obliczyć sumę (lub znaleźć minimum, maksimum itp.) elementów na przedziale od indeksu `L` do `R`, gdzie `0 <= L <= R <= n-1`.
-2. **Aktualizacja (Point Update):** Chcemy zmienić wartość konkretnego elementu w tablicy, np. `arr[i] = x`.
+2. **Aktualizacja :** Chcemy zmienić wartość konkretnego elementu w tablicy, np. `arr[i] = x`.
 
 ### Standardowe podejścia (i ich wady)
 
@@ -167,7 +167,7 @@ Naiwny Kadane: ~7 013 307 ns (ponad 7 milisekund)
 
 Drzewo przedziałowe: 1 231 ns (~1.2 mikrosekundy)
 
-Przyspieszenie: ~5700×.
+Przyspieszenie: ~5700x.
 
 # Inne ciekawe zastosowania Segment Tree
 
