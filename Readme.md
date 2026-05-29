@@ -34,11 +34,11 @@ Oznacza to, że żadne z tych podejść nie jest optymalne, jeśli spodziewamy s
 
 ## Kluczowe Operacje
 
-1. **Budowa (Build):**
+1. **Budowa**
    * Na początku tworzymy pełne drzewo. Proces ten jest inicjowany jednokrotnie z czasem wykonania **$O(n)$**.
-2. **Zapytanie (Query):**
+2. **Zapytanie**
    * Służy do uzyskania wyniku dla zadanego przedziału, np. "Jaka jest suma elementów od indeksu 2 do 5?". Złożoność czasowa wynosi **$O(\log n)$**.
-3. **Aktualizacja (Update):**
+3. **Aktualizacja**
    * Służy do aktualizacji informacji zapisanych w drzewie, gdy zmieni się wartość pojedynczego elementu w oryginalnej tablicy. Aktualizowany jest dany liść, a następnie węzły na ścieżce od tego liścia do korzenia (aby zachować poprawne sumy/minima wyżej). Złożoność wynosi **$O(\log n)$**.
 
 ## Dlaczego $O(\log n)$? (Wizualizacja Złożoności)
@@ -140,7 +140,10 @@ long long queryMaxSubarray(int l, int r) {
 ```
 Dlaczego l % 2 == 1 i r % 2 == 0?
 
-Wynika to z faktu, że dla l % 2 == 1 operacja l / 2 nie będzie zawierać samego elementu l – chodzi o sposób indeksowania w drzewie (standardowe drzewo przedziałowe 2n).
+*W naszej implementacji dla wygody tablica jest ideksowna od 1 zatem ideksy nie parzyste to lewe liscie a parzyste prawe.*
+
+Jesli dla elementu l takiego ze `l % 2 == 1` pojdziemy do gory 'l /=2' to tree[l] bedzie zawierac sume przedzialow `[l -1 ...], [l ...]`
+gdzie drugi przedzial wykracza po za zakres [l,r] wiec nie mozemy go po prostu uzglednic analogicznie jest dla r % 2 == 0.
 
 # Benchmark Drzewo Przedziałowe vs Naiwny Algorytm Kadane'a
 
@@ -157,6 +160,8 @@ BigO – Wyliczona przez Framework rzeczywista złożoność asymptotyczna na po
 RMS – Współczynnik błędu dopasowania do idealnej krzywej matematycznej. Im bliżej 0%, tym bardziej algorytm zachowuje się jak teorytczna zloznosc
 
 **Podsumowanie:**
+
+Dla *n = 10^6* 
 
 Naiwny Kadane: ~7 013 307 ns (ponad 7 milisekund)
 
