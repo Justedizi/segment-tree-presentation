@@ -93,7 +93,7 @@ void updateElement(int index, long long value) {
 Łączenie dwóch przedzialow
 
 ```cpp
-Node SegmentTree::combine(const Node& left, const Node& right) {
+Node combine(const Node& left, const Node& right) {
     if (left.ans == MIN_INF) return right;
     if (right.ans == MIN_INF) return left;
 
